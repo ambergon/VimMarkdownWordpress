@@ -114,9 +114,6 @@ class VimWordPress:
                 return
         self.wp = Client( self.blog_section[ 'url' ] , self.blog_section[ 'user' ] , self.blog_section[ 'password' ])
 
-    #指定bufferの検索
-    #bloglist bufferに上書き
-    #末尾に追加とオフセットの計算
 
     #引数にopen 記事ID
     def blogList( self ):
