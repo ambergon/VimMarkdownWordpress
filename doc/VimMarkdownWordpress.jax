@@ -58,6 +58,8 @@ Readme.mdと~/.vimMarkdownWordpressをご確認ください
 
 :BlogList					*:BlogList*
 記事一覧の取得。引数なし。
+記事の行  <enter>:記事を開く
+more list <enter>:記事を追加で読み込む
 
 
 :BlogSave [{}]					*:BlogSave*
