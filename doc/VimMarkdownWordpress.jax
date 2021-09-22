@@ -1,7 +1,7 @@
 *VimMarkdownWordpress.txt*	日本語ヘルプ
 
-Version :
-Author  :
+Version :1.0.0
+Author  :ambergon
 License : MIT license  {{{
     Permission is hereby granted, free of charge, to any person obtaining
     a copy of this software and associated documentation files (the
@@ -37,14 +37,16 @@ TODO				|VimMarkdownWordpress-todo|
 ==============================================================================
 概要						*VimMarkdownWordpress-introduction*
 
-*VimMarkdownWordpress* は
+*VimMarkdownWordpress*
+はvimからmarkdown記法でwordpressの記事を編集できるようにするプラグインです
 
 最新版:
-https://github.com/user/VimMarkdownWordpress.vim
+https://github.com/ambergon/VimMarkdownWordpress
 
 
 ==============================================================================
 使い方						*VimMarkdownWordpress-usage*
+Readme.mdと~/.vimMarkdownWordpressをご確認ください
 
 
 
@@ -55,21 +57,33 @@ https://github.com/user/VimMarkdownWordpress.vim
 コマンド					*VimMarkdownWordpress-commands*
 
 :BlogList					*:BlogList*
+記事一覧の取得。引数なし。
 
 
 :BlogSave [{}]					*:BlogSave*
+現在のバッファをWordpressに保存する。
+引数 publish のみ有効
+引数を指定しなかった場合、下書きとなる。
 
 
 :BlogNew					*:BlogNew*
+引数なし。
+記事のテンプレートバッファを作成
 
 
 :BlogOpen {}					*:BlogOpen*
+引数 記事ID
+指定した記事を開く
 
 
 :BlogSwitch {}					*:BlogSwitch*
+設定ファイルに記述されたセクション名を引数にとる。
+セクションで指定されたサイトにアクセスするように変更。
 
 
 :BlogUpload {}					*:BlogUpload*
+引数 file_path
+画像をuploadしてカーソルの一行下にリンクを出力する。
 
 
 ------------------------------------------------------------------------------
@@ -79,6 +93,7 @@ CompSave({lead}, {line}, {pos} )		*CompSave()*
 
 
 CompSwitch({lead}, {line}, {pos} )		*CompSwitch()*
+追記することでセクション名を補完する
 
 
 ==============================================================================
