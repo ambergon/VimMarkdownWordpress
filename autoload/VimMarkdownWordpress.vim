@@ -1,5 +1,5 @@
 
-function! s:PyCMD(pyfunc)
+function! VimMarkdownWordpress#PyCMD(pyfunc)
     exec('python3 ' . a:pyfunc)
 endfunction
 
