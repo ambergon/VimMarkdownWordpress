@@ -1,6 +1,18 @@
 
 function! VimMarkdownWordpress#PyCMD(pyfunc)
-    exec('python3 ' . a:pyfunc)
+
+    if !exists('s:login')
+        let s:result = py3eval('VimWordPressInst.setup()')
+        if s:result == 1
+            echo 'config : section[main] in default '
+            echo 'write and restert'
+        else
+            let s:login = 1
+        endif
+    else
+        exec('python3 ' . a:pyfunc)
+    endif
+
 endfunction
 
 function! CompSave(lead, line, pos )
@@ -68,8 +80,6 @@ class VimWordPress:
         if( os.path.exists( self.config_path ) == 0 ):
             self.writeConfig()
             print( 'make file : ' + self.config_path )
-            print( 'plz write this config & RESTART' )
-            return
         self.readConfig()
 
     def writeConfig( self ):
@@ -103,7 +113,13 @@ class VimWordPress:
             else:
                 print( 'not exist sections : ' + section_name )
                 return
-        self.wp = Client( self.blog_section[ 'url' ] , self.blog_section[ 'user' ] , self.blog_section[ 'password' ])
+
+    def setup( self ):
+        if( self.blog_section[ 'url' ] == 'https://your_homepage_url/xmlrpc.php' ):
+            return 1
+        else:
+            self.wp = Client( self.blog_section[ 'url' ] , self.blog_section[ 'user' ] , self.blog_section[ 'password' ])
+            return 0
 
 
     #引数にopen 記事ID
