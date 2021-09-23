@@ -126,7 +126,6 @@ class VimWordPress:
 
         for blog_post in blog_posts:
             X = blog_post.id + ' [' + blog_post.post_status + '] ' + blog_post.title 
-            #X = blog_post.id + ' ' + blog_post.title 
             vim.current.buffer.append( X )
 
             
