@@ -9,7 +9,9 @@ function! VimMarkdownWordpress#PyCMD(pyfunc)
         else
             let s:login = 1
         endif
-    else
+    endif
+
+    if exists('s:login')
         exec('python3 ' . a:pyfunc)
     endif
 
