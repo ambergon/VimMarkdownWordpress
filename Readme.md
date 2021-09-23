@@ -45,8 +45,8 @@ url = https://your_homepage_url/xmlrpc.php
 - BlogList<br />
     引数はありません。<br />
     blog_list_numの数だけ記事一覧を出力します。<br />
-    ---- More List ---- で<enter>:追加の記事を同じ数だけ出力します。<br />
-    記事ID TITILE行     で<enter>:記事を開きます。<br />
+    ---- More List ---- で`<enter>`:追加の記事を同じ数だけ出力します。<br />
+    記事ID TITILE行     で`<enter>`:記事を開きます。<br />
     また記事を開かずに別のバッファを開いた場合、Listバッファのみ自動で閉じます。<br />
 - BlogNew<br />
     引数はありません。<br />
