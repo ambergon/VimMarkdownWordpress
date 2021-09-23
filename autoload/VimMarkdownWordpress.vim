@@ -121,12 +121,12 @@ class VimWordPress:
         vim.command("map <silent> <buffer> <enter> :py3 VimWordPressInst.blogOpen()<cr>")
 
 
-        #wordpress.pyのdefinitionから引数を確認せよ
         blog_args = { "number" : self.BLOG_LIST_NUM , "offset" : 0 , }
         blog_posts = self.wp.call(GetPosts(blog_args))
 
         for blog_post in blog_posts:
-            X = blog_post.id + ' ' + blog_post.title 
+            X = blog_post.id + ' [' + blog_post.post_status + '] ' + blog_post.title 
+            #X = blog_post.id + ' ' + blog_post.title 
             vim.current.buffer.append( X )
 
             
@@ -141,7 +141,7 @@ class VimWordPress:
         blog_posts = self.wp.call(GetPosts(blog_args))
 
         for blog_post in blog_posts:
-            X = blog_post.id + ' ' + blog_post.title 
+            X = blog_post.id + ' [' + blog_post.post_status + '] ' + blog_post.title 
             vim.current.buffer.append( X )
 
             
