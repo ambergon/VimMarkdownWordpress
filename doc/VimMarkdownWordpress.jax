@@ -57,34 +57,30 @@ Readme.mdと~/.vimMarkdownWordpressをご確認ください
 コマンド					*VimMarkdownWordpress-commands*
 
 :BlogList					*:BlogList*
-記事一覧の取得。引数なし。
 記事の行  <enter>:記事を開く
 more list <enter>:記事を追加で読み込む
 
 
-:BlogSave [{}]					*:BlogSave*
+:BlogSave [{draft|publish}]			*:BlogSave*
 現在のバッファをWordpressに保存する。
 引数 publish のみ有効
-引数を指定しなかった場合、下書きとなる。
+引数を指定しなかった場合、draftと同じ
 
 
 :BlogNew					*:BlogNew*
-引数なし。
 記事のテンプレートバッファを作成
 
 
-:BlogOpen {}					*:BlogOpen*
-引数 記事ID
+:BlogOpen {POST_ID}				*:BlogOpen*
 指定した記事を開く
 
 
-:BlogSwitch {}					*:BlogSwitch*
+:BlogSwitch {SECTION_NAME}			*:BlogSwitch*
 設定ファイルに記述されたセクション名を引数にとる。
 セクションで指定されたサイトにアクセスするように変更。
 
 
-:BlogUpload {}					*:BlogUpload*
-引数 file_path
+:BlogUpload {FILE_PATH}				*:BlogUpload*
 画像をuploadしてカーソルの一行下にリンクを出力する。
 
 

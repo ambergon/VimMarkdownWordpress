@@ -43,28 +43,21 @@ url = https://your_homepage_url/xmlrpc.php
 
 ## Command
 - BlogList<br />
-    引数はありません。<br />
     blog_list_numの数だけ記事一覧を出力します。<br />
     ---- More List ---- で`<enter>`:追加の記事を同じ数だけ出力します。<br />
     記事ID TITILE行     で`<enter>`:記事を開きます。<br />
     また記事を開かずに別のバッファを開いた場合、Listバッファのみ自動で閉じます。<br />
 - BlogNew<br />
-    引数はありません。<br />
     新規で記事を作成するためのテンプレートバッファを開きます。<br />
-- BlogSave<br />
-    引数 publish draft 無し<br />
+- BlogSave `[draft|publish]`<br />
+    引数を渡さない場合はdraftとして扱います
     テンプレートから情報を読み出し記事を保存します。<br />
-    引数を指定しない場合、draftを指定した場合は下書きとして保存されます。<br />
-    publishのみ公開状態で保存します。<br />
-- BlogOpen<br />
-    引数 記事ID<br />
+- BlogOpen `<POST_ID>`<br />
     IDの記事を開き編集可能の状態になります。<br />
-- BlogSwich <br />
-    引数 セクション名<br />
+- BlogSwich `<Sectio_name>`<br />
     指定したセクションを読み込み別のサイトに切り替えます。<br />
     vim script`CompSwich`のlistを編集するとtabで補完してくれるようになります。<br />
-- BlogUpload<br />
-    引数 画像のpath<br />
+- BlogUpload `<file_path>`<br />
     画像ファイルをwordpressにアップロードしてhtmlタグを現在のカーソルの一行下に挿入します<br />
 
 
