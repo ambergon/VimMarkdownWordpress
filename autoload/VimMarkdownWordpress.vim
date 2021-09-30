@@ -30,21 +30,34 @@ python3 << EOF
 # -*- coding: utf-8 -*-
 
 import vim
-
-#import time
-#print( time.time() )
 import os.path
 from configparser import ConfigParser
-from markdown import Markdown , extensions
 
-#pip install python-wordpress-xmlrpc
-from wordpress_xmlrpc import Client, WordPressPost
-from wordpress_xmlrpc.methods.posts import GetPost , GetPosts, NewPost ,EditPost
+try:   
+    from markdown import Markdown , extensions
+except ImportError:   
+    try:
+        pip_command( [ 'install' , 'markdown' ])   
+        print("install : markdown")
+        from markdown import Markdown , extensions
+    except:   
+        print("install error : markdown")
 
-#画像up関係
-from wordpress_xmlrpc.compat import xmlrpc_client
-from wordpress_xmlrpc.methods.media import UploadFile 
-
+try:   
+    from wordpress_xmlrpc import Client, WordPressPost
+    from wordpress_xmlrpc.methods.posts import GetPost , GetPosts, NewPost ,EditPost
+    from wordpress_xmlrpc.compat import xmlrpc_client
+    from wordpress_xmlrpc.methods.media import UploadFile 
+except ImportError:   
+    try:
+        pip_command( [ 'install' , 'python-wordpress-xmlrpc' ])   
+        print("install : python-wordpress-xmlrpc")
+        from wordpress_xmlrpc import Client, WordPressPost
+        from wordpress_xmlrpc.methods.posts import GetPost , GetPosts, NewPost ,EditPost
+        from wordpress_xmlrpc.compat import xmlrpc_client
+        from wordpress_xmlrpc.methods.media import UploadFile 
+    except:   
+        print("install error : python-wordpress-xmlrpc")
 
 class VimWordPress:
 
