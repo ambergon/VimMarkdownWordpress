@@ -37,7 +37,8 @@ try:
     from markdown import Markdown , extensions
 except ImportError:   
     try:
-        pip_command( [ 'install' , 'markdown' ])   
+        #pip_command( [ 'install' , 'markdown' ])   
+        vim.command("!pip install markdown")
         print("install : markdown")
         from markdown import Markdown , extensions
     except:   
@@ -50,7 +51,8 @@ try:
     from wordpress_xmlrpc.methods.media import UploadFile 
 except ImportError:   
     try:
-        pip_command( [ 'install' , 'python-wordpress-xmlrpc' ])   
+        #pip_command( [ 'install' , 'python-wordpress-xmlrpc' ])   
+        vim.command("!pip install python-wordpress-xmlrpc")
         print("install : python-wordpress-xmlrpc")
         from wordpress_xmlrpc import Client, WordPressPost
         from wordpress_xmlrpc.methods.posts import GetPost , GetPosts, NewPost ,EditPost
