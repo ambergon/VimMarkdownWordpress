@@ -249,7 +249,9 @@ class VimWordPress:
                 #mkd_textの出力
                 field_lines = array['value'].splitlines()
                 for field_line in field_lines :
-                    vim.current.buffer.append( field_line )
+                    #文末の空白を除去
+                    line = re.sub( ' +$' , '' , field_line)
+                    vim.current.buffer.append( line )
                 break
 
     def blogNew( self , POST_ID = '' , FIELD_ID = '' , TITLE = '' , CATE = '' , TAG = '' ):
