@@ -30,6 +30,7 @@ python3 << EOF
 # -*- coding: utf-8 -*-
 
 import vim
+import re
 import os.path
 from configparser import ConfigParser
 
