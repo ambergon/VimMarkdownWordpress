@@ -13,5 +13,3 @@ command! -nargs=0                                   BlogNew    call VimMarkdownW
 command! -nargs=1                                   BlogOpen   call VimMarkdownWordpress#PyCMD('VimWordPressInst.blogOpen(<f-args>)')
 command! -nargs=1 -complete=customlist,CompSwitch   BlogSwitch call VimMarkdownWordpress#PyCMD('VimWordPressInst.readConfig(<f-args>)')
 command! -nargs=1 -complete=file                    BlogUpload call VimMarkdownWordpress#PyCMD('VimWordPressInst.blogPictureUpload(<f-args>)')
-
-command! -nargs=1                                   BlogOpenTest   call VimMarkdownWordpress#PyCMD('VimWordPressInst.blogOpenTest(<f-args>)')
