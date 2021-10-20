@@ -47,6 +47,7 @@ except ImportError:
 try:   
     from wordpress_xmlrpc import Client, WordPressPost
     from wordpress_xmlrpc.methods.posts import GetPost , GetPosts, NewPost ,EditPost
+    from wordpress_xmlrpc.methods.taxonomies import GetTerms
     from wordpress_xmlrpc.compat import xmlrpc_client
     from wordpress_xmlrpc.methods.media import UploadFile 
 except ImportError:   
@@ -174,13 +175,10 @@ class VimWordPress:
         for blog_post in blog_posts:
             X = blog_post.id + ' [' + blog_post.post_status + '] ' + blog_post.title 
             vim.current.buffer.append( X )
-
             
         #最後の行を削除
         del vim.current.buffer[offset]
         vim.current.buffer.append( self.MORE_LIST )
-
-
 
     def blogOpen( self , POST_ID = 'null' ):
         #if( vim.current.line == self.MORE_LIST ):
@@ -223,13 +221,24 @@ class VimWordPress:
                 vim.command('setl syntax=blogsyntax')
                 vim.command('setl filetype=' + self.core_section['set_filetype'] )
 
+                #カテゴリ一覧をリスト
+                all_category =[]
+                all_category_raw = wp.call( GetTerms("category"))
+                for tags in all_category_raw:
+                    all_category.append(str(tags))
+
+                #所属カテゴリとタグをリスト
+                post_tags =[]
+                for post_tag in post.terms:
+                    post_tags.append(str(post_tag))
+                post_tags = set(post_tags)
+
+                #同名のカテゴリが存在するならcate/無ければtag
                 POST_TAGS     = ''
                 POST_CATEGORY = ''
-                tag_count = 0
-                for post_tag in post.terms :
-                    if( tag_count == 0 ):
-                        tag_count = 1
-                        POST_CATEGORY = str(post_tag)
+                for post_tag in post_tags :
+                    if post_tag in all_category:
+                        POST_CATEGORY = POST_CATEGORY + str(post_tag) + ','
                     else:
                         POST_TAGS = POST_TAGS + str(post_tag) + ','
 
@@ -281,20 +290,21 @@ class VimWordPress:
         POST_ID         = vim.current.buffer[1].replace(self.META_ID,'')
         CUSTOM_FIELD_ID = vim.current.buffer[2].replace(self.META_CUSTOM_FIELD_ID,'')
         TITLE           = vim.current.buffer[4].replace(self.META_TITLE,'')
-        CATEGORY        = vim.current.buffer[5].replace(self.META_CATEGORY,'')
+        CATEGORY        = vim.current.buffer[5].replace(self.META_CATEGORY,'').split(',')
         TAG             = vim.current.buffer[6].replace(self.META_TAGS,'').split(',')
         #空の要素を削除する
         TAG = list(filter( None , TAG))
+        #CATEGORY.replace(' ','')
+        CATEGORY = list(filter( None , CATEGORY))
 
         post = WordPressPost()
         post.title = TITLE
 
-        CATEGORY.replace(' ','')
         post.terms_names = None
         #カテゴリを指定しない場合はカテゴリもタグの変化しない
         if( CATEGORY != ''):
             post.terms_names ={
-                'category' : [ CATEGORY ] ,
+                'category' : CATEGORY ,
                 'post_tag' : TAG   ,
                 }
 
