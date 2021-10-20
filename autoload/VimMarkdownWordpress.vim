@@ -223,7 +223,7 @@ class VimWordPress:
 
                 #カテゴリ一覧をリスト
                 all_category =[]
-                all_category_raw = wp.call( GetTerms("category"))
+                all_category_raw = self.wp.call( GetTerms("category"))
                 for tags in all_category_raw:
                     all_category.append(str(tags))
 
