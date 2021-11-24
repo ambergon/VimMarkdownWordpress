@@ -126,6 +126,7 @@ class VimWordPress:
         else:
             if( config.has_section( section_name )):
                 self.blog_section = config[ section_name ]
+                x = self.setup()
                 print('ok change : ' + section_name )
             else:
                 print( 'not exist sections : ' + section_name )
