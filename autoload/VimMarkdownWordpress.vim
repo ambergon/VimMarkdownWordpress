@@ -108,6 +108,15 @@ class VimWordPress:
             print( 'make file : ' + self.config_path )
         self.readConfig()
 
+    def sectionList( self ):
+        config.read( self.config_path )
+        sections_list = config.sections()
+        if "core" in sections_list:
+            sections_list.remove("core")
+
+        return sections_list
+
+
     def writeConfig( self ):
         config = ConfigParser()
         config['core'] = { 
