@@ -30,8 +30,15 @@ function! CompSave(lead, line, pos )
 endfunction
 
 function! CompSwitch(lead, line, pos )
-    "let s:result = py3eval('VimWordPressInst.setup()')
-    return ['main' , '']
+    let l:list = py3eval('VimWordPressInst.sectionList()')
+    let l:matches = []
+    for file in l:list
+        if file =~? '^' . strpart(a:lead,0)
+            echo add(l:matches,file)
+        endif
+    endfor
+    return l:matches
+    "return ['main' , '']
 endfunction
 
 
@@ -109,6 +116,7 @@ class VimWordPress:
         self.readConfig()
 
     def sectionList( self ):
+        config = ConfigParser()
         config.read( self.config_path )
         sections_list = config.sections()
         if "core" in sections_list:
