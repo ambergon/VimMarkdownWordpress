@@ -17,12 +17,21 @@ function! VimMarkdownWordpress#PyCMD(pyfunc)
 
 endfunction
 
+
 function! CompSave(lead, line, pos )
-  return ['draft' , 'publish']
+    let l:matches = []
+    for file in [ "publish" , "Publish" , "draft" , "Draft" ]
+        if file =~? '^' . strpart(a:lead,0)
+            echo add(l:matches,file)
+        endif
+    endfor
+    return l:matches
+    "return ['draft' , 'publish']
 endfunction
 
 function! CompSwitch(lead, line, pos )
-  return ['main' , '']
+    let s:result = py3eval('VimWordPressInst.setup()')
+    return ['main' , '']
 endfunction
 
 
