@@ -17,30 +17,10 @@ function! VimMarkdownWordpress#PyCMD(pyfunc)
 
 endfunction
 
-
-function! CompSave(lead, line, pos )
-    let l:matches = []
-    for file in [ "publish" , "Publish" , "draft" , "Draft" ]
-        if file =~? '^' . strpart(a:lead,0)
-            echo add(l:matches,file)
-        endif
-    endfor
-    return l:matches
-    "return ['draft' , 'publish']
-endfunction
-
-function! CompSwitch(lead, line, pos )
+function! VimMarkdownWordpress#getSectionList()
     let l:list = py3eval('VimWordPressInst.sectionList()')
-    let l:matches = []
-    for file in l:list
-        if file =~? '^' . strpart(a:lead,0)
-            echo add(l:matches,file)
-        endif
-    endfor
-    return l:matches
-    "return ['main' , '']
+    return l:list
 endfunction
-
 
 python3 << EOF
 # -*- coding: utf-8 -*-
