@@ -30,7 +30,7 @@ function! CompSave(lead, line, pos )
 endfunction
 
 function! CompSwitch(lead, line, pos )
-    let s:result = py3eval('VimWordPressInst.setup()')
+    "let s:result = py3eval('VimWordPressInst.setup()')
     return ['main' , '']
 endfunction
 
