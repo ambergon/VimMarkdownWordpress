@@ -209,7 +209,6 @@ class VimWordPress:
         #    return
 
         post = self.wp.call( GetPost( POST_ID ) )
-        print('anko')
 
         #custom_fieldが存在しない場合
         if( len( post.custom_fields ) == 0 ):
