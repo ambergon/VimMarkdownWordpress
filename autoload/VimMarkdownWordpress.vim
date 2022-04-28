@@ -59,7 +59,7 @@ except ImportError:
 
 class VimWordPress:
 
-    BUFFER_NAME = 'VimWordpress://'
+    BUFFER_NAME = 'VimWordpress:/'
     PLUGIN_KEY = 'mkd_text'
     MORE_LIST = '---- More List ----'
     BLOG_LIST_NUM = 100
@@ -187,14 +187,15 @@ class VimWordPress:
         del vim.current.buffer[offset]
         vim.current.buffer.append( self.MORE_LIST )
 
-    def blogOpen( self , POST_ID = 'null' ):
-        #if( vim.current.line == self.MORE_LIST ):
-        if( POST_ID == 'null' and vim.current.line == self.MORE_LIST ):
+    def blogOpen( self , POST_ID = 0 ):
+
+        #bloglistをさらに表示する。
+        if( POST_ID == 0 and vim.current.line == self.MORE_LIST ):
             self.addList()
             return
             
-        if( POST_ID == 'null' ):
-
+        #bloglistから現在のカーソル下の数字をnumとして利用する。
+        if( POST_ID == 0):
             line = vim.current.line.split()
             #''
             if( len( line ) == 0 ):
@@ -202,12 +203,13 @@ class VimWordPress:
                 return
             POST_ID = line[0]
             
-        #POST_IDは数値である
-        if (not POST_ID.isdecimal() ):
-            print( 'POST_ID is not number' )
-            return
+        ##POST_IDは数値である
+        #if (not POST_ID.isdecimal() ):
+        #    print( 'POST_ID is not number' )
+        #    return
 
         post = self.wp.call( GetPost( POST_ID ) )
+        print('anko')
 
         #custom_fieldが存在しない場合
         if( len( post.custom_fields ) == 0 ):
@@ -219,7 +221,7 @@ class VimWordPress:
             if( self.PLUGIN_KEY in array.values() ):
 
                 #新しいファイルを開く
-                vim.command( ':e '   + self.BUFFER_NAME + POST_ID )
+                vim.command( ':e '   + self.BUFFER_NAME + str(POST_ID) )
                 del vim.current.buffer[:]
 
                 #削除時に保存するか聞かない
@@ -251,18 +253,6 @@ class VimWordPress:
 
                 self.blogNew( POST_ID , array['id'] , post.title , POST_CATEGORY , POST_TAGS )
 
-                ##新規記事の準備
-                #vim.current.buffer.append( self.META_ME  )
-                #vim.current.buffer.append( self.META_ID +  POST_ID )
-                #vim.current.buffer.append( self.META_CUSTOM_FIELD_ID +  array['id'] )
-                #vim.current.buffer.append( self.META_YOU )
-                #vim.current.buffer.append( self.META_TITLE + post.title  )
-
-                #vim.current.buffer.append( self.META_CATEGORY  + POST_CATEGORY )
-                #vim.current.buffer.append( self.META_TAGS  + POST_TAGS )
-                #vim.current.buffer.append( self.META_END  )
-                #del vim.current.buffer[0]
-
                 #mkd_textの出力
                 field_lines = array['value'].splitlines()
                 for field_line in field_lines :
@@ -276,14 +266,14 @@ class VimWordPress:
         if( POST_ID == '' ):
             vim.command( ':e '   + self.BUFFER_NAME + 'NEW_POST' )
         else:
-            vim.command( ':e '   + self.BUFFER_NAME + POST_ID )
+            vim.command( ':e '   + self.BUFFER_NAME + str(POST_ID) )
         vim.command('setl buftype=nowrite' )
         vim.command("setl encoding=utf-8")
         vim.command('setl syntax=blogsyntax')
         vim.command('setl filetype=' + self.core_section[ 'set_filetype' ] )
         del vim.current.buffer[:]
         vim.current.buffer.append( self.META_ME  )
-        vim.current.buffer.append( self.META_ID +  POST_ID )
+        vim.current.buffer.append( self.META_ID +  str(POST_ID) )
         vim.current.buffer.append( self.META_CUSTOM_FIELD_ID +  FIELD_ID )
         vim.current.buffer.append( self.META_YOU )
         vim.current.buffer.append( self.META_TITLE + TITLE )
