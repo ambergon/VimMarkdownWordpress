@@ -146,6 +146,48 @@ class VimWordPress:
             return 0
 
 
+
+
+
+
+
+
+
+
+
+    #専用のバッファを開いてそこにアップロードされるテキストを投げる。
+    #iframe改行の対策 
+    def blogTest( self ):
+
+        contents        = vim.current.buffer[:]
+
+        vim.command( ':e ' + self.BUFFER_NAME + 'Test' )
+        #bufferが隠れたら削除
+        vim.command( 'setl bufhidden=delete' )
+        #削除時に保存するか聞かない
+        vim.command( 'setl buftype=nowrite' )
+        vim.command('setl filetype=html')
+
+        markdown_text   = ''
+        html_text       = ''
+        for line in contents :
+            markdown_text = markdown_text + line + ' \n'
+
+        m_ext= self.core_section[ 'markdown_extension' ].replace(' ','').split(',')
+        m_ext= list(filter( None , m_ext))
+        md = Markdown( extensions = m_ext )
+        html_text = md.convert( markdown_text )
+        #print( html_text )
+
+        for line in html_text.splitlines():
+        #    #文末の空白を除去
+        #    line = re.sub( ' +$' , '' , field_line)
+            vim.current.buffer.append( line )
+        del vim.current.buffer[0]
+
+
+
+
     #引数にopen 記事ID
     def blogList( self ):
 

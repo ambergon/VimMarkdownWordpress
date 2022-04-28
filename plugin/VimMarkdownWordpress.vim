@@ -15,6 +15,8 @@ command! -nargs=1                                   BlogOpen   call VimMarkdownW
 command! -nargs=1 -complete=customlist,CompSwitch   BlogSwitch call VimMarkdownWordpress#PyCMD('VimWordPressInst.readConfig(<f-args>)')
 command! -nargs=1 -complete=file                    BlogUpload call VimMarkdownWordpress#PyCMD('VimWordPressInst.blogPictureUpload(<f-args>)')
 
+command! -nargs=0                                   BlogTest   call VimMarkdownWordpress#PyCMD('VimWordPressInst.blogTest(<f-args>)')
+
 function! CompSave(lead, line, pos )
     let l:matches = []
     for file in [ "publish" , "Publish" , "draft" , "Draft" ]
