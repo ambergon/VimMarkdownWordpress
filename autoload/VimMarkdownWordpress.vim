@@ -146,17 +146,6 @@ class VimWordPress:
             return 0
 
 
-
-
-
-
-
-
-
-
-
-    #専用のバッファを開いてそこにアップロードされるテキストを投げる。
-    #iframe改行の対策 
     def blogTest( self ):
 
         contents        = vim.current.buffer[:]
@@ -177,11 +166,8 @@ class VimWordPress:
         m_ext= list(filter( None , m_ext))
         md = Markdown( extensions = m_ext )
         html_text = md.convert( markdown_text )
-        #print( html_text )
 
         for line in html_text.splitlines():
-        #    #文末の空白を除去
-        #    line = re.sub( ' +$' , '' , field_line)
             vim.current.buffer.append( line )
         del vim.current.buffer[0]
 
