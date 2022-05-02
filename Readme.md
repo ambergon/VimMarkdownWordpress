@@ -60,6 +60,9 @@ url = https://your_homepage_url/xmlrpc.php
 - BlogUpload `<file_path>`<br />
     画像ファイルをwordpressにアップロードしてhtmlタグを現在のカーソルの一行下に挿入します<br />
 
+- BlogTest<br />
+    現在表示されているバッファをhtmlにコンバートして新しいバッファに出力します。
+    
 
 ## Requirements
 python3
