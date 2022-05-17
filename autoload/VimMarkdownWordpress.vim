@@ -1,5 +1,10 @@
 
-function! VimMarkdownWordpress#PyCMD(pyfunc)
+"default 500
+"autopreview true
+"
+"new conf template
+
+function! VimMarkdownWordpress#pycmd(pyfunc)
 
     if !exists('s:login')
         let s:result = py3eval('VimWordPressInst.setup()')
@@ -12,7 +17,7 @@ function! VimMarkdownWordpress#PyCMD(pyfunc)
     endif
 
     if exists('s:login')
-        exec('python3 ' . a:pyfunc)
+        exec('python3 VimWordPressInst.' . a:pyfunc)
     endif
 
 endfunction
@@ -22,6 +27,12 @@ function! VimMarkdownWordpress#getSectionList()
     return l:list
 endfunction
 
+function! VimMarkdownWordpress#autoPicturePreview()
+    augroup autopreview
+        autocmd CursorMoved <buffer> call VimMarkdownWordpress#pycmd("picture_preview()")
+    augroup end
+endfunction
+
 python3 << EOF
 # -*- coding: utf-8 -*-
 
@@ -29,6 +40,16 @@ import vim
 import re
 import os.path
 from configparser import ConfigParser
+
+try:   
+    import cv2
+except ImportError:   
+    try:
+        vim.command("!pip install opencv-python")
+        print("install : opencv-python")
+        import cv2
+    except:   
+        print("install error : opencv-python")
 
 try:   
     from markdown import Markdown , extensions
@@ -63,6 +84,7 @@ class VimWordPress:
     PLUGIN_KEY = 'mkd_text'
     MORE_LIST = '---- More List ----'
     BLOG_LIST_NUM = 100
+    PICTURE_WIDTH = 500
 
     META_ME              = '[Meta] Dont touch =========='
     META_ID              = 'ID              :'
@@ -110,7 +132,8 @@ class VimWordPress:
         config['core'] = { 
                 'markdown_extension' : 'extra,nl2br,' ,
                 'blog_list_num'      : '100' ,
-                'set_filetype'      : 'markdown' ,
+                'set_filetype'       : 'markdown' ,
+                'picture_width'      : '500' ,
                 }
         config['main'] = { 
                 'user' : 'user_name' ,
@@ -125,8 +148,11 @@ class VimWordPress:
     def readConfig( self, section_name = '' ):
         config = ConfigParser()
         config.read( self.config_path )
+
         self.core_section = config[ 'core' ]
         self.BLOG_LIST_NUM = self.core_section[ 'blog_list_num' ]
+        self.PICTURE_WIDTH = self.core_section[ 'picture_width' ]
+
         if( section_name == '' ):
             self.blog_section = config[ 'main' ]
         else:
@@ -186,7 +212,10 @@ class VimWordPress:
 
         ##bufferにたいしてkey-bind
         #enter
-        vim.command("map <silent> <buffer> <enter> :py3 VimWordPressInst.blogOpen()<cr>")
+
+
+        vim.command( 'map <silent><buffer><enter>   :call VimMarkdownWordpress#pycmd("blogOpen()")<cr>' )
+        #vim.command("map <silent> <buffer> <enter> :py3 VimWordPressInst.blogOpen()<cr>")
 
 
         blog_args = { "number" : self.BLOG_LIST_NUM , "offset" : 0 , }
@@ -380,34 +409,132 @@ class VimWordPress:
 
         print('done')
 
-    def blogPictureUpload( self , file_path = 'null' ):
-        if ( os.path.exists( file_path )):
-            file_name = os.path.basename( file_path )
-            file_extension = os.path.splitext( file_name)[1]
-            file_type = ''
 
-            if( file_extension in [ '.jpeg' , '.jpg' ] ):
-                file_type = 'image/jpeg'
-            if( file_extension == '.png' ):
-                file_type = 'image/png'
-            if( file_extension == '.gif' ):
-                file_type = 'image/gif'
 
-            #methods/media/uploadFileに引数が書いてある
-            data = {
-                    'name' : file_name ,
-                    'type' : file_type ,
-                    }
-            with open( file_path , 'rb' ) as img:
-                data[ 'bits' ] = xmlrpc_client.Binary( img.read() )
-            response = self.wp.call(UploadFile( data ))
 
-            cursor = vim.current.window.cursor 
-            picture_text = '<a href="' + response['url'] + '">' + '<img title="' + response['title'] + '" alt="' + response['title'] + '" src="' + response['url'] + '" class="aligncenter" /></a>'
-            vim.current.buffer.append( picture_text , cursor[0] )
 
+    def blogPictureUploadCheck( self , file_path = './' ):
+        if os.path.exists( file_path ):
+            if os.path.isdir( file_path ):
+                self.openPictureDir( file_path )
+            else:
+                blogPictureUpload( file_path )
         else:
             print( 'not found file' )
+
+
+
+
+    def blogPictureUpload( self , file_path ):
+        file_name = os.path.basename( file_path )
+        file_extension = os.path.splitext( file_name)[1]
+        file_type = ''
+
+        if( file_extension in [ '.jpeg' , '.jpg' ] ):
+            file_type = 'image/jpeg'
+        if( file_extension == '.png' ):
+            file_type = 'image/png'
+        if( file_extension == '.gif' ):
+            file_type = 'image/gif'
+
+        #methods/media/uploadFileに引数が書いてある
+        data = {
+                'name' : file_name ,
+                'type' : file_type ,
+                }
+        with open( file_path , 'rb' ) as img:
+            data[ 'bits' ] = xmlrpc_client.Binary( img.read() )
+        response = self.wp.call(UploadFile( data ))
+
+        cursor = vim.current.window.cursor 
+        picture_text = '<a href="' + response['url'] + '">' + '<img title="' + response['title'] + '" alt="' + response['title'] + '" src="' + response['url'] + '" class="aligncenter" /></a>'
+        vim.current.buffer.append( picture_text , cursor[0] )
+
+
+
+    def openPictureDir( self , dir ):
+
+        #vim.command( 'enew "selectPicture"' )
+        vim.command( 'leftabove vnew "selectPicture"' )
+        vim.command( 'setl buftype=nowrite' )
+        vim.command( 'setl bufhidden=wipe' )
+
+        vim.command( 'map <silent><buffer> <C-p>   :call VimMarkdownWordpress#pycmd("picture_preview()")<cr>' )
+        vim.command( 'map <silent><buffer> <C-a>   :call VimMarkdownWordpress#autoPicturePreview()<cr>' )
+        vim.command( 'map <silent><buffer> <C-d>   :call VimMarkdownWordpress#pycmd("picture_wipe()")<cr>' )
+        vim.command( 'autocmd BufLeave <buffer>     call VimMarkdownWordpress#pycmd("picture_wipe()")')
+        vim.command( 'map <silent><buffer> <enter> :call VimMarkdownWordpress#pycmd("picture_do()")<cr>' )
+        self.picture_setFiles( dir )
+
+    def picture_setFiles( self , dir ):
+
+        #\->/
+        dir = re.sub( "\\\\" , '/' , dir )
+        del vim.current.buffer[:]
+        ls_files = os.listdir( dir )
+        for line in ls_files:
+            vim.current.buffer.append( line )
+        vim.current.buffer[0] = dir
+
+    def picture_preview( self ):
+        folder  = vim.current.buffer[0]
+        line = vim.current.line
+        path = folder + line
+        if( not os.path.isdir( path ) ):
+            pictures = [ 'jpg' , 'png' , 'gif' ]
+            for extension in pictures:
+                if path.endswith( '.' + extension ):
+                    self.picture_open( path )
+                    break
+
+    def picture_open( self , file ):
+        img = cv2.imread( file )
+
+        width = int( self.PICTURE_WIDTH )
+        h,w = img.shape[:2]
+        height = round(h * (width / w ))
+        img = cv2.resize( img , dsize=(width,height))
+        cv2.imshow("Image" , img )
+
+    def picture_wipe( self ):
+        cv2.destroyAllWindows()
+
+    def picture_do( self ):
+        dir  = vim.current.buffer[0]
+        line = vim.current.line
+        if( dir == line ):
+            check_back = re.sub( '(../)*' , '' , dir )
+            if( check_back == '' or check_back == './' ):
+                dir = dir + '../'
+                self.picture_setFiles( dir )
+
+            else:
+                re_line = line[::-1]
+                re_line = re.sub( '^/.+?/' , '/' , re_line , 1 )
+                line = re_line[::-1]
+                self.picture_setFiles( line )
+
+        else:
+            path = dir + line
+            if( os.path.isdir( path ) ):
+                path = path + '/'
+                self.picture_setFiles( path )
+
+            else:
+                pictures = [ 'jpg' , 'png' , 'gif' ]
+                for extension in pictures:
+                    if path.endswith( '.' + extension ):
+                        #self.picture_open( path )
+                        vim.command('hid')
+                        self.blogPictureUpload( path )
+                        #print( path )
+                        break
+
+
+
+
+
+
 
 VimWordPressInst = VimWordPress()
 

@@ -7,15 +7,17 @@
 "let g:loaded_VimMarkdownWordpress = 1
 
 
-command! -nargs=0                                   BlogList   call VimMarkdownWordpress#PyCMD('VimWordPressInst.blogList(<f-args>)')
-command! -nargs=? -complete=customlist,CompSave     BlogSave   call VimMarkdownWordpress#PyCMD('VimWordPressInst.blogSave(<f-args>)')
+command! -nargs=0                                   BlogList   call VimMarkdownWordpress#pycmd('blogList(<f-args>)')
+"command! -nargs=0                                   BlogList   call VimMarkdownWordpress#pycmd('blogList(<f-args>)')
+command! -nargs=? -complete=customlist,CompSave     BlogSave   call VimMarkdownWordpress#pycmd('blogSave(<f-args>)')
 
-command! -nargs=0                                   BlogNew    call VimMarkdownWordpress#PyCMD('VimWordPressInst.blogNew()')
-command! -nargs=1                                   BlogOpen   call VimMarkdownWordpress#PyCMD('VimWordPressInst.blogOpen(<f-args>)')
-command! -nargs=1 -complete=customlist,CompSwitch   BlogSwitch call VimMarkdownWordpress#PyCMD('VimWordPressInst.readConfig(<f-args>)')
-command! -nargs=1 -complete=file                    BlogUpload call VimMarkdownWordpress#PyCMD('VimWordPressInst.blogPictureUpload(<f-args>)')
+command! -nargs=0                                   BlogNew    call VimMarkdownWordpress#pycmd('blogNew()')
+command! -nargs=1                                   BlogOpen   call VimMarkdownWordpress#pycmd('blogOpen(<f-args>)')
+command! -nargs=1 -complete=customlist,CompSwitch   BlogSwitch call VimMarkdownWordpress#pycmd('readConfig(<f-args>)')
+"command! -nargs=1 -complete=file                    BlogUpload call VimMarkdownWordpress#pycmd('blogPictureUploadCheck(<f-args>)')
+command! -nargs=? -complete=file                    BlogUpload call VimMarkdownWordpress#pycmd('blogPictureUploadCheck(<f-args>)')
 
-command! -nargs=0                                   BlogTest   call VimMarkdownWordpress#PyCMD('VimWordPressInst.blogTest(<f-args>)')
+command! -nargs=0                                   BlogTest   call VimMarkdownWordpress#pycmd('blogTest(<f-args>)')
 
 function! CompSave(lead, line, pos )
     let l:matches = []
