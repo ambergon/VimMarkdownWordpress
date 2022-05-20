@@ -1,6 +1,6 @@
 *VimMarkdownWordpress.txt*	日本語ヘルプ
 
-Version :1.0.0
+Version :2.0.0
 Author  :ambergon
 License : MIT license  {{{
     Permission is hereby granted, free of charge, to any person obtaining
@@ -80,8 +80,19 @@ more list <enter>:記事を追加で読み込む
 セクションで指定されたサイトにアクセスするように変更。
 
 
-:BlogUpload {FILE_PATH}				*:BlogUpload*
-画像をuploadしてカーソルの一行下にリンクを出力する。
+:BlogUpload {FILE_PATH or Dir}				*:BlogUpload*
+引数は必須ではありません。
+引数がない場合、専用のバッファでカレントディレクトリを開きます。
+
+専用のバッファの挙動
+<C-a>:自動プレビューの切り替え
+<C-d>:プレビューウィンドウの削除
+<C-p>:現在カーソルがあるファイルのプレビュー。
+<enter>:カーソル下のファイルを選択してアップロードします。
+
+
+画像をuploadしてカーソルの一行下にリンクを出力します。
+
 
 
 :BlogTest					*:BlogTest*
@@ -105,6 +116,9 @@ TODO						*VimMarkdownWordpress-todo*
 
 ==============================================================================
 更新履歴					*VimMarkdownWordpress-changelog*
+
+Version :2.0.0
+	画像のプレビュー機能の追加
 
 
 ==============================================================================

@@ -1,10 +1,10 @@
-"if !has("python3")
-"    finish
-"endif
-"if exists('g:loaded_VimMarkdownWordpress')
-"    finish
-"endif
-"let g:loaded_VimMarkdownWordpress = 1
+if !has("python3")
+    finish
+endif
+if exists('g:loaded_VimMarkdownWordpress')
+    finish
+endif
+let g:loaded_VimMarkdownWordpress = 1
 
 
 command! -nargs=0                                   BlogList   call VimMarkdownWordpress#pycmd('blogList(<f-args>)')

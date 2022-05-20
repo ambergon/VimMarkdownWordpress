@@ -1,9 +1,4 @@
 
-"default 500
-"autopreview true
-"
-"new conf template
-
 function! VimMarkdownWordpress#pycmd(pyfunc)
 
     if !exists('s:login')
@@ -28,9 +23,30 @@ function! VimMarkdownWordpress#getSectionList()
 endfunction
 
 function! VimMarkdownWordpress#autoPicturePreview()
-    augroup autopreview
-        autocmd CursorMoved <buffer> call VimMarkdownWordpress#pycmd("picture_preview()")
-    augroup end
+    if !exists('s:autoPreview_option')
+        let s:autoPreview_option = 1
+    else
+        if s:autoPreview_option == 0
+            let s:autoPreview_option = 1
+        else
+            let s:autoPreview_option = 0
+        endif
+    endif
+
+    if s:autoPreview_option == 1
+        echo 'autoPreview on'
+        augroup autoPreview
+            autocmd CursorMoved <buffer> call VimMarkdownWordpress#pycmd("picture_preview()")
+            autocmd BufLeave <buffer> unlet s:autoPreview_option
+        augroup end
+    else
+        echo 'autoPreview off'
+        augroup autoPreview
+            autocmd!
+        augroup end
+        call VimMarkdownWordpress#pycmd("picture_wipe()")
+    endif
+
 endfunction
 
 python3 << EOF
@@ -85,6 +101,7 @@ class VimWordPress:
     MORE_LIST = '---- More List ----'
     BLOG_LIST_NUM = 100
     PICTURE_WIDTH = 500
+    PICTURE_AUTOPREVIEW = 1
 
     META_ME              = '[Meta] Dont touch =========='
     META_ID              = 'ID              :'
@@ -133,6 +150,7 @@ class VimWordPress:
                 'markdown_extension' : 'extra,nl2br,' ,
                 'blog_list_num'      : '100' ,
                 'set_filetype'       : 'markdown' ,
+                'picture_autopreview': '1' ,
                 'picture_width'      : '500' ,
                 }
         config['main'] = { 
@@ -152,6 +170,7 @@ class VimWordPress:
         self.core_section = config[ 'core' ]
         self.BLOG_LIST_NUM = self.core_section[ 'blog_list_num' ]
         self.PICTURE_WIDTH = self.core_section[ 'picture_width' ]
+        self.PICTURE_AUTOPREVIEW = int( self.core_section[ 'picture_autopreview' ] )
 
         if( section_name == '' ):
             self.blog_section = config[ 'main' ]
@@ -418,7 +437,7 @@ class VimWordPress:
             if os.path.isdir( file_path ):
                 self.openPictureDir( file_path )
             else:
-                blogPictureUpload( file_path )
+                self.blogPictureUpload( file_path )
         else:
             print( 'not found file' )
 
@@ -461,6 +480,8 @@ class VimWordPress:
 
         vim.command( 'map <silent><buffer> <C-p>   :call VimMarkdownWordpress#pycmd("picture_preview()")<cr>' )
         vim.command( 'map <silent><buffer> <C-a>   :call VimMarkdownWordpress#autoPicturePreview()<cr>' )
+        if self.PICTURE_AUTOPREVIEW == 1:
+            vim.command( "call VimMarkdownWordpress#autoPicturePreview()" )
         vim.command( 'map <silent><buffer> <C-d>   :call VimMarkdownWordpress#pycmd("picture_wipe()")<cr>' )
         vim.command( 'autocmd BufLeave <buffer>     call VimMarkdownWordpress#pycmd("picture_wipe()")')
         vim.command( 'map <silent><buffer> <enter> :call VimMarkdownWordpress#pycmd("picture_do()")<cr>' )
@@ -524,10 +545,8 @@ class VimWordPress:
                 pictures = [ 'jpg' , 'png' , 'gif' ]
                 for extension in pictures:
                     if path.endswith( '.' + extension ):
-                        #self.picture_open( path )
                         vim.command('hid')
                         self.blogPictureUpload( path )
-                        #print( path )
                         break
 
 

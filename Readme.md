@@ -13,6 +13,8 @@ windows10/python3環境での使用を想定しています。<br />
 markdown_extension = extra,nl2br,
 blog_list_num = 100
 set_filetype = markdown
+picture_autopreview = 0
+picture_width       = 500
 ```
 
 - markdown_extensions<br />
@@ -24,6 +26,10 @@ set_filetype = markdown
 - set_filetype
     記事を編集時に専用のバッファを記事IDごとに開きます。<br />
     この際に`set filetype`を指定しますが、専用のハイライトなどを用意したい場合はこちらで指定してください。<br />
+- picture_autopreview
+    1を設定すると自動で画像のプレビューを表示します
+- picture_width
+    プレビューする画像サイズを指定します。
 
 ```
 ##サイトごとの設定
@@ -59,9 +65,17 @@ url = https://your_homepage_url/xmlrpc.php
     vim script`CompSwich`のlistを編集するとtabで補完してくれるようになります。<br />
 - BlogUpload `<file_path>`<br />
     画像ファイルをwordpressにアップロードしてhtmlタグを現在のカーソルの一行下に挿入します<br />
+    ディレクトリを指定すると専用のバッファを開きます。
 
 - BlogTest<br />
     現在表示されているバッファをhtmlにコンバートして新しいバッファに出力します。
+
+##BlogUpload [dir or file]
+dirを指定した場合専用のバッファを開きます。
+<C-a>:自動プレビューの切り替え
+<C-d>:プレビューウィンドウの削除
+<C-p>:現在カーソルがあるファイルのプレビュー。
+<enter>:カーソル下のファイルを選択してアップロードします。
     
 
 ## Requirements
@@ -69,6 +83,7 @@ python3
 ```
 pip install markdown
 pip install python-wordpress-xmlrpc
+pip install opencv-python
 ```
 
 ## License
