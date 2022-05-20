@@ -70,11 +70,15 @@ url = https://your_homepage_url/xmlrpc.php
 - BlogTest<br />
     現在表示されているバッファをhtmlにコンバートして新しいバッファに出力します。
 
-##BlogUpload [dir or file]
+## BlogUpload [dir or file]
 dirを指定した場合専用のバッファを開きます。
+
 <C-a>:自動プレビューの切り替え
+
 <C-d>:プレビューウィンドウの削除
+
 <C-p>:現在カーソルがあるファイルのプレビュー。
+
 <enter>:カーソル下のファイルを選択してアップロードします。
     
 
