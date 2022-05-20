@@ -21,14 +21,14 @@ picture_width       = 500
     markdownの拡張機能をpipで取り込んでいるならば<br />
     module名の追記をすることで有効化できます。<br />
     fence_codeなどを追加するとテーブルの記入が快適になります。<br />
-- blog_list_num
+- blog_list_num<br />
     記事一覧を表示する際の一度に読み込む記事の数です。<br />
-- set_filetype
+- set_filetype<br />
     記事を編集時に専用のバッファを記事IDごとに開きます。<br />
     この際に`set filetype`を指定しますが、専用のハイライトなどを用意したい場合はこちらで指定してください。<br />
-- picture_autopreview
+- picture_autopreview<br />
     1を設定すると自動で画像のプレビューを表示します
-- picture_width
+- picture_width<br />
     プレビューする画像サイズを指定します。
 
 ```
@@ -40,9 +40,10 @@ password = wordpress_password
 url = https://your_homepage_url/xmlrpc.php
 ```
 
-- `[main]`はデフォルトで読み込むセクション名になっています。<br />
+- mainセクション<br />
+    `[main]`はデフォルトで読み込むセクション名になっています。<br />
     新しいセクション名を作成して複数のサイトを管理することも可能です。<br />
-- url
+- url<br />
     xmlrpc.phpまでのパスを記載してください。local環境のwordpressにアクセスする場合はhttp://~になるかと思います。<br />
 
 
