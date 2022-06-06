@@ -502,7 +502,7 @@ class VimWordPress:
         line = vim.current.line
         path = folder + line
         if( not os.path.isdir( path ) ):
-            pictures = [ 'jpg' , 'png' , 'gif' ]
+            pictures = [ 'jpg' , 'JPG' , 'png' , 'PNG' , 'gif' ]
             for extension in pictures:
                 if path.endswith( '.' + extension ):
                     self.picture_open( path )
