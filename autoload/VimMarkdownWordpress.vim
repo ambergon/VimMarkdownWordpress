@@ -449,7 +449,7 @@ class VimWordPress:
         file_extension = os.path.splitext( file_name)[1]
         file_type = ''
 
-        if( file_extension in [ '.jpeg' , '.jpg' ] ):
+        if( file_extension in [ '.jpeg' , '.jpg' , '.JPG' ] ):
             file_type = 'image/jpeg'
         if( file_extension == '.png' ):
             file_type = 'image/png'
@@ -542,7 +542,7 @@ class VimWordPress:
                 self.picture_setFiles( path )
 
             else:
-                pictures = [ 'jpg' , 'png' , 'gif' ]
+                pictures = [ 'jpg' , 'JPG' , 'png' , 'PNG' , 'gif' ]
                 for extension in pictures:
                     if path.endswith( '.' + extension ):
                         vim.command('hid')
