@@ -57,42 +57,30 @@ import re
 import os.path
 from configparser import ConfigParser
 
-try:   
-    import cv2
-except ImportError:   
-    try:
-        vim.command("!pip install opencv-python")
-        print("install : opencv-python")
-        import cv2
-    except:   
-        print("install error : opencv-python")
+import cv2
+from markdown import Markdown , extensions
 
-try:   
-    from markdown import Markdown , extensions
-except ImportError:   
-    try:
-        vim.command("!pip install markdown")
-        print("install : markdown")
-        from markdown import Markdown , extensions
-    except:   
-        print("install error : markdown")
+from wordpress_xmlrpc import Client, WordPressPost
+from wordpress_xmlrpc.methods.posts import GetPost , GetPosts, NewPost ,EditPost
+from wordpress_xmlrpc.methods.taxonomies import GetTerms
+from wordpress_xmlrpc.compat import xmlrpc_client
+from wordpress_xmlrpc.methods.media import UploadFile 
 
-try:   
-    from wordpress_xmlrpc import Client, WordPressPost
-    from wordpress_xmlrpc.methods.posts import GetPost , GetPosts, NewPost ,EditPost
-    from wordpress_xmlrpc.methods.taxonomies import GetTerms
-    from wordpress_xmlrpc.compat import xmlrpc_client
-    from wordpress_xmlrpc.methods.media import UploadFile 
-except ImportError:   
-    try:
-        vim.command("!pip install python-wordpress-xmlrpc")
-        print("install : python-wordpress-xmlrpc")
-        from wordpress_xmlrpc import Client, WordPressPost
-        from wordpress_xmlrpc.methods.posts import GetPost , GetPosts, NewPost ,EditPost
-        from wordpress_xmlrpc.compat import xmlrpc_client
-        from wordpress_xmlrpc.methods.media import UploadFile 
-    except:   
-        print("install error : python-wordpress-xmlrpc")
+#修正するmodule
+from wordpress_xmlrpc.base import XmlrpcMethod
+#修正に必要module
+from wordpress_xmlrpc.compat import dict_type
+import collections.abc
+def FIXED_process_result(self, raw_result):
+    if self.results_class and raw_result:
+        if isinstance(raw_result, dict_type):
+            return self.results_class(raw_result)
+        elif isinstance(raw_result, collections.abc.Iterable): 
+            return [self.results_class(result) for result in raw_result]
+    return raw_result
+#メソッドの置き換え。
+XmlrpcMethod.process_result = FIXED_process_result
+
 
 class VimWordPress:
 
