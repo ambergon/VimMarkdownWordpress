@@ -1,6 +1,6 @@
 *VimMarkdownWordpress.txt*	日本語ヘルプ
 
-Version :2.0.0
+Version :3.0.0
 Author  :ambergon
 License : MIT license  {{{
     Permission is hereby granted, free of charge, to any person obtaining
@@ -75,22 +75,8 @@ more list <enter>:記事を追加で読み込む
 指定した記事を開く
 
 
-:BlogSwitch {SECTION_NAME}			*:BlogSwitch*
-設定ファイルに記述されたセクション名を引数にとる。
-セクションで指定されたサイトにアクセスするように変更。
 
-
-:BlogUpload {FILE_PATH or Dir}				*:BlogUpload*
-引数は必須ではありません。
-引数がない場合、専用のバッファでカレントディレクトリを開きます。
-
-専用のバッファの挙動
-<C-a>:自動プレビューの切り替え
-<C-d>:プレビューウィンドウの削除
-<C-p>:現在カーソルがあるファイルのプレビュー。
-<enter>:カーソル下のファイルを選択してアップロードします。
-
-
+:BlogMedia <FILE_PATH >				*:BlogMedia*
 画像をuploadしてカーソルの一行下にリンクを出力します。
 
 
@@ -119,6 +105,10 @@ TODO						*VimMarkdownWordpress-todo*
 
 Version :2.0.0
 	画像のプレビュー機能の追加
+Version :3.0.0
+	最新のpythonに対応。
+	使用頻度の著しく低い機能群のオミット
+	必要に応じて別機能として用意することに。
 
 
 ==============================================================================
