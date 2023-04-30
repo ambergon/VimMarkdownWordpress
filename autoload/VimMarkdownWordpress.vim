@@ -268,14 +268,17 @@ class PythonClass:
                 })
             Post.custom_fields = CustomField
             NewPostID = self.wp.call( NewPost( Post ) )
+            print( NewPostID )
+
             vim.current.buffer[1] = self.META_ID + NewPostID
-            #ID類をセットしなおす。
-            NewPost = WordPressPost()
-            NewPost = self.wp.call( GetPost( NewPostID ) )
-            for array in NewPost.custom_fields:
+            ##ID類をセットしなおす。
+            #関数名に干渉するからNewPostは駄目よ。
+            newPost = WordPressPost()
+            newPost = self.wp.call( GetPost( NewPostID ) )
+            for array in newPost.custom_fields:
                 if( self.CUSTOM_FIELD_KEY in array.values() ):
                     vim.current.buffer[2] = self.META_CUSTOM_FIELD_ID + array["id"]
-                    vim.command( ":file "   + self.BUFFER_NAME + NewPostID )
+                    vim.command( ":file "   + self.BufferName + NewPostID )
                     break
         #編集
         else:
