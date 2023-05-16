@@ -9,6 +9,9 @@ import os
 from wordpress_xmlrpc import Client, WordPressPost
 from wordpress_xmlrpc.methods.posts import GetPost , GetPosts , NewPost , EditPost
 from wordpress_xmlrpc.methods.taxonomies import GetTerms
+#media
+from wordpress_xmlrpc.compat import xmlrpc_client
+from wordpress_xmlrpc.methods.media import UploadFile
 
 class PythonClass:
     wp = ""
@@ -327,7 +330,7 @@ class PythonClass:
             data[ 'bits' ] = xmlrpc_client.Binary( img.read() )
         Response = self.wp.call(UploadFile( data ))
 
-        Cursor = vim.current.window.Cursor 
+        Cursor = vim.current.window.cursor 
         MediaText = '<a href="' + Response['url'] + '">' + '<img title="' + Response['title'] + '" alt="' + Response['title'] + '" src="' + Response['url'] + '" class="aligncenter" /></a>'
         vim.current.buffer.append( MediaText , Cursor[0] )
 
