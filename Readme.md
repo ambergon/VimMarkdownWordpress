@@ -5,10 +5,10 @@ windows10/python3環境での使用を想定しています。<br />
 
 
 ## 環境詳細
-Windows10
-VIM 9.0
-Python 3.11.3
-
+- Windows10
+- VIM 9.0
+- Python 3.11.3
+ 
 
 ## 設定
 起動時に自動的に`~/.vimMarkdownWordpress`が生成されます<br />
