@@ -40,7 +40,7 @@ augroup wordpress
     autocmd BufEnter VimWordpress://NewPost cabbrev w W
     autocmd BufLeave VimWordpress://NewPost cunabbrev w
     autocmd BufEnter VimWordpress://NewPost command! -buffer -nargs=0 W                  call VimMarkdownWordpress#pycmd('BlogSave(<f-args>)')
-endfunction
+augroup END
 "function! CompSwitch(lead, line, pos )
 "    let l:list = VimMarkdownWordpress#getSectionList()
 "    let l:matches = []
@@ -50,6 +50,7 @@ endfunction
 "        endif
 "    endfor
 "    return l:matches
+"endfunction
 
 
 
