@@ -1,4 +1,3 @@
-
 python3 << EOF
 # -*- coding: utf-8 -*-
 import vim
@@ -16,7 +15,7 @@ from wordpress_xmlrpc.methods.media import UploadFile
 class PythonClass:
     wp = ""
     md = markdown.Markdown()
-    BufferName = 'VimWordpress:/'
+    BufferName = 'VimWordpress://'
 
     MarkdownExtension   = []
     #読み込む最大数。
@@ -36,6 +35,7 @@ class PythonClass:
 
     CUSTOM_FIELD_KEY = "mkd_text"
 
+    # {{{
     def __init__( self ):
         print( "init" )
         ConfigPath = os.path.expanduser("~") + "/" + ".vimMarkdownWordpress"
@@ -64,9 +64,12 @@ class PythonClass:
         self.MarkdownExtension = list(filter( None , self.MarkdownExtension))
         self.md = markdown.Markdown( extensions = self.MarkdownExtension )
 
-
-    #設定ファイルが存在しなければ。
+    # }}}
+    # {{{
     def WriteConfig( self , ConfigPath ):
+        #設定ファイルが存在しなければ。
+        #現在表示しているバッファの内容を
+        #横のバッファでマークダウン化したものを表示。
         config = ConfigParser()
         config["core"] = { 
                 "MarkdownExtension"  : "extra,nl2br,"   ,
@@ -81,9 +84,8 @@ class PythonClass:
         with open( ConfigPath , "w" ) as ConfigText:
             config.write( ConfigText )
 
-
-    #現在表示しているバッファの内容を
-    #横のバッファでマークダウン化したものを表示。
+    # }}}
+    # {{{
     def BlogTest( self ):
         text = ""
         for line in vim.current.buffer[:]:
@@ -98,7 +100,8 @@ class PythonClass:
             vim.current.buffer.append( line )
         del vim.current.buffer[0]
 
-
+    # }}}
+    # {{{
     def BlogTemplate( self , PostID = "" , FieldID = "" , TITLE = "" , CATE = "" , TAG = "" , FieldText = ""):
         #新しいファイルを開く
         if( PostID == "" ):
@@ -129,7 +132,8 @@ class PythonClass:
         del vim.current.buffer[0]
         return
 
-
+    # }}}
+    # {{{
     def BlogList( self ):
         args  = { "number" : self.BlogListNum , "offset" : 0 , }
         Posts = self.wp.call( GetPosts ( args ))
@@ -152,8 +156,8 @@ class PythonClass:
         #規定の行を末尾に。
         #これをenterしたときにさらに読み込めるように。
         vim.current.buffer.append( self.MoreList )
-
-
+    # }}}
+    # {{{
     def BlogListAdd( self ):
         #現在の行数分、最新投稿を取り除く。
         offset = len( vim.current.buffer ) - 1
@@ -165,8 +169,8 @@ class PythonClass:
         #最後の行/MoreListを削除
         del vim.current.buffer[offset]
         vim.current.buffer.append( self.MoreList )
-
-
+    # }}}
+    # {{{
     def BlogOpen( self , PostID = 0 ):
         #Listの再読み込み
         #BlogListBuffer && current.line MoreList
@@ -226,9 +230,8 @@ class PythonClass:
                 self.BlogTemplate( PostID , CustomField["id"] , Post.title , PostCate , PostTags , FieldText )
                 break
 
-
-
-    #適当なテキストを保存できるように使用。
+    # }}}
+    # {{{
     def BlogSave( self , STATUS="draft" ):
         POST_ID         = vim.current.buffer[1].replace(self.META_ID , ""              )
         CUSTOM_FIELD_ID = vim.current.buffer[2].replace(self.META_CUSTOM_FIELD_ID , "" )
@@ -295,10 +298,8 @@ class PythonClass:
         
         print('done')
 
-
-
-
-    #別のプラグインから連携させるのが一番賢い気がする。
+    # }}}
+    # {{{
     def BlogMedia( self , FilePath = './' ):
         if not os.path.exists( FilePath ):
             print( 'not found file' )
@@ -334,7 +335,7 @@ class PythonClass:
         MediaText = '<a href="' + Response['url'] + '">' + '<img title="' + Response['title'] + '" alt="' + Response['title'] + '" src="' + Response['url'] + '" class="aligncenter" /></a>'
         vim.current.buffer.append( MediaText , Cursor[0] )
 
-
+    # }}}
 
 
 #修正するmodule
@@ -351,8 +352,6 @@ def FIXED_process_result(self, raw_result):
     return raw_result
 #メソッドの置き換え。
 XmlrpcMethod.process_result = FIXED_process_result
-
-
 VimMarkdownWordPressInst = PythonClass()
 EOF
 
